@@ -27,8 +27,8 @@ const setSuccess = (key, value) => {
   })
 };
 
-export const createResource = (path) => ({
-  read() {
+export const createResource = () => ({
+  read(path) {
     const result = getCache(path);
     switch (result.status) {
       case 'NOT_STARTED':

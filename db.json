@@ -1,5 +1,11 @@
 {
   "people": [
-    { "id": 1, "name": "kevin" }
+    { "id": 1, "name": "Jessie" },
+    { "id": 2, "name": "Trey" },
+    { "id": 3, "name": "Jay" },
+    { "id": 4, "name": "Alex" },
+    { "id": 5, "name": "Jeff" },
+    { "id": 6, "name": "Finney" },
+    { "id": 7, "name": "kevin" }
   ]
 }
