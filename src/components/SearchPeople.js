@@ -11,7 +11,7 @@ const enhance = Re.compose(
 
 export default enhance(React.memo(({ query, onSearch }) => (
   <>
-  <input type="text" onChange={onSearch} />
+  <input type="text" value={query} onChange={onSearch} />
   <Suspense fallback={<div>searching</div>}>
     <SearchPeopleResults query={query} />
   </Suspense>
