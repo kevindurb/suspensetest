@@ -1,20 +1,8 @@
 import React from 'react';
-import { currentLocation } from '../resources/location';
-import { weather } from '../resources/weather';
+import { currentPositionWeather } from '../resources/weather';
 
 export default React.memo(() => {
-  const {
-    coords: {
-      latitude,
-      longitude,
-    },
-  } = currentLocation.read();
-
-  const {
-    hourly: {
-      summary,
-    },
-  } = weather.read(latitude, longitude);
+  const summary = currentPositionWeather.read();
 
   return (<div>{summary}</div>);
 });

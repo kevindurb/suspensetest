@@ -1,7 +1,11 @@
 import { createResource } from '../resource';
 
-export const currentLocation = createResource((options) => (
+export const getCurrentPosition = (options) => (
   new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject, options)
   })
+);
+
+export const currentPosition = createResource((options) => (
+  getCurrentPosition(options)
 ));

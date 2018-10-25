@@ -86,3 +86,22 @@ export const createResource = (fn) => {
     }
   };
 };
+
+const isPromise = (x) => (
+  'then' in x && typeof x.then === 'function'
+);
+
+export const getResourceValue = (resource) => (...args) =>
+  new Promise((resolve, reject) => {
+    try {
+      resolve(resource.read(...args));
+    } catch (e) {
+      if (isPromise(e)) {
+        e
+        .then(resolve)
+        .catch(reject);
+      } else {
+        reject(e);
+      }
+    }
+  });
