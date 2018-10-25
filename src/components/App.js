@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 
-const Thing = React.lazy(() => import('./Thing'));
+const Weather = React.lazy(() => import('./Weather'));
 
 export default React.memo(() => (
   <Suspense fallback={<div>LOADING</div>}>
-    <Thing id={1}/>
+    <Weather />
   </Suspense>
 ));
