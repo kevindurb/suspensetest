@@ -1,7 +1,6 @@
 const RESOLVED = Symbol('RESOLVED');
 const PENDING = Symbol('PENDING');
 const NOT_STARTED = Symbol('NOT_STARTED');
-const REJECTED = Symbol('REJECTED');
 
 export const createResource = (fn) => {
   const cache = {};
@@ -11,6 +10,7 @@ export const createResource = (fn) => {
   const getCache = (key) => (cache[key] || {
     status: NOT_STARTED,
     value: null,
+    thenable: null,
   });
 
   const setCache = (key, value) => {
@@ -22,7 +22,7 @@ export const createResource = (fn) => {
     setCache(key, {
       ...result,
       status: PENDING,
-      value: thenable,
+      thenable,
     })
   };
 
@@ -32,15 +32,6 @@ export const createResource = (fn) => {
       ...result,
       status: RESOLVED,
       value,
-    });
-  };
-
-  const setRejected = (key, error) => {
-    const result = getCache(key);
-    setCache(key, {
-      ...result,
-      status: REJECTED,
-      value: error,
     });
   };
 
@@ -55,29 +46,20 @@ export const createResource = (fn) => {
               setResolved(key, data);
               return data;
             })
-            .catch((error) => {
-              setRejected(key, error);
-              return error;
+            .catch(() => {
+              setCache(key, undefined);
             });
           setPending(key, thenable);
           throw thenable;
         }
         case PENDING: {
-          const thenable = result.value;
-          return thenable;
+          throw result.thenable;
         }
         case RESOLVED: {
-          const value = result.value;
-          return value;
+          return result.value;
         }
-        case REJECTED: {
-          const error = result.value;
-          return error;
-        }
-        default: {
-          // should be unreachable
+        default:
           return undefined;
-        }
       }
     },
     invalidate(...args) {

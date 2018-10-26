@@ -7,6 +7,6 @@ const getSwapi = (path) =>
   fetch(`${BASE_URL}${path}`)
     .then(res => res.json());
 
-export const people = createResource((query) => (
+export const people = createResource(throttle((query) => (
   getSwapi(`/people/?search=${encodeURIComponent(query)}`)
-));
+)));

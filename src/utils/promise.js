@@ -1,22 +1,18 @@
-const resolveAll = (calls) => (...args) =>
-  calls.forEach(({ resolve }) => resolve(...args));
-
-const rejectAll = (calls) => (...args) =>
-  calls.forEach(({ reject }) => reject(...args));
-
-export const throttle = (fn, time = 200) => {
-  let calls = [];
+export const throttle = (fn, time = 2000) => {
+  let rejectLast;
   let timeout;
 
   return (...args) => {
     clearTimeout(timeout);
 
     return new Promise((resolve, reject) => {
-      calls.push({ resolve, reject });
+      if (rejectLast) { rejectLast(); }
+      rejectLast = reject;
+
       timeout = setTimeout(() => {
         Promise.resolve(fn(...args))
-          .then(resolveAll(calls))
-          .catch(rejectAll(calls))
+          .then(resolve)
+          .catch(reject)
       }, time);
     });
   };

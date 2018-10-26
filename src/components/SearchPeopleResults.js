@@ -4,11 +4,9 @@ import { people } from '../resources/starwars';
 export default React.memo(({
   query
 }) => {
-  const { results } = people.read(query);
+  const response = people.read(query);
 
-  if (!results) return null;
-
-  return results.map((person) => (
-    <div>{person.name}</div>
+  return response.results.map((person) => (
+    <div key={person.url}>{person.name}</div>
   ));
 })
